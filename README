@@ -1,0 +1,13 @@
+Samuel Horton
+Assignment 6
+CSCI 4229
+
+key bindings:
+
+'[' - decrease elevation of light
+']' - increase elevation of light
+'page dn' - zoom out
+'page up' - zoom in
+'m' - pause/unpause light
+
+arrow keys - rotate up,down,left,right
