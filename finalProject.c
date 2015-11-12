@@ -23,7 +23,7 @@ double asp=1;     //  Aspect ratio
 double dim=42.0;   //  Size of world
 // Light values
 int one       =   1;  // Unit value
-int distance  =   5;  // Light distance
+int distance  =   50;  // Light distance
 int inc       =  10;  // Ball increment
 int smooth    =   1;  // Smooth/Flat shading
 int local     =   0;  // Local Viewer Model
@@ -48,9 +48,25 @@ char* sky = "sky.bmp";
 unsigned int a;
 unsigned int b;
 unsigned int c;
+int height = -20;
+int upDown,leftRight=0;
 #define LEN 8192  //  Maximum length of text string
 
 static void skyBox(double D);
+
+
+void Print(const char* format , ...)
+{
+   char    buf[LEN];
+   char*   ch=buf;
+   va_list args;
+   va_start(args,format);
+   vsnprintf(buf,LEN,format,args);
+   va_end(args);
+   while (*ch)
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,*ch++);
+}
+
 
 void calculateNormal(int x1,int y1,int z1,int x2,int y2,int z2,int x3,int y3,int z3)
 {
@@ -85,40 +101,74 @@ Below Allen: 28 x 22
 */
 
 int i, j;
-int h = 1;
+double h = 0.1;
+double streetWidth = 7.5;
 //for each row
-for (i = 0; i < 1; i++)
+for (i = 0; i < 3; i++)
 {
-int x1, x2, y1, y2;
+double x1, x2, y1, y2;
 
 
 if (i == 0) {
 x1 = y1 = 0;
-x2 = 28;
+x2 = 28.0;
 y2 = 28.5;
+}
+
+else if (i == 1){
+x1 = 0.0;
+y1 = 36.5;
+x2 = 28.0;
+y2 = 65.0;
+}
+
+else if (i == 2){
+x1 = 0.0;
+y1 = 72.0;
+x2 = 28.0;
+y2 = 94.0;
 }
         //draw each block in this row
 	for (j = 0; j < 5; j++)
 	
-	{       printf("x1 is %d, and x2 is %d\n",x1 ,x2);
+	{       //printf("x1 is %f, and x2 is %f\n",x1 ,x2);
         	glBegin(GL_QUADS);
 		glColor3f(0,0.5,0.7);
 		glVertex3f(x1,h,y1);
 		glVertex3f(x2,h,y1);
  		glVertex3f(x2,h,y2);
 		glVertex3f(x1,h,y2);
+                glRasterPos3d(5.0,0.0,0.0);
+		char place[25];
+		sprintf(place,"%f,%f", x1,y1);
+		//Print(place);
+		Print("L");	
+                
+		int i1;
+		for (i1 = 0; i1 < 6; i1++)
+			smallHouse1(0.6,0.6,0.6,0.0,x2-2-i1*5,0.0,y2);
+		double x0 = x1;
+                x1 = x2 + streetWidth;
+                x2 = (x2-x0) + x2 + streetWidth;
 
-                if (i == 0){
-		int x0 = x1;
-                x1 = x2 + 8;
-		x2 = (x2-x0) + x2 + 8;
-		}
+		
+
 		glEnd();
 	}
 
 
 }
  
+
+}
+
+void drawBuildings()
+{
+/* 
+int i;
+for (i = 0; i < 5; i++)
+smallHouse1(0.6,0.6,0.6,0.0,24.0-i*5,0.0,92.0);
+*/
 
 }
 
@@ -144,14 +194,14 @@ void DEM()
       glBegin(GL_QUADS);
       int i;
       int j;
-      int x1 = 39;
-      int x2 = 33;
-      int y1 = 39;
-      int y2 = 33;
-      for (j = 0; j<20;j++){
-      y1 = 39;
-      y2 = 33;
-      for (i = 0; i<14; i++) {
+      int x1 = 174;
+      int x2 = 168;
+      int y1 = 174;
+      int y2 = 168;
+      for (j = 0; j<50;j++){
+      y1 = 174;
+      y2 = 168;
+      for (i = 0; i<50; i++) {
       calculateNormal(x1,0,y1, x2,0,y1, x2,0,y2);
       glTexCoord2f(0,0); glVertex3d(x1,0,y1);
       glTexCoord2f(1,0); glVertex3d(x2,0,y1);
@@ -196,6 +246,7 @@ static void drawWorld(double x,double y,double z,
    //glScaled(dx,dy,dz); 
    DEM();
    drawRoads();
+   drawBuildings();
    skyBox(200);
     
 
@@ -297,7 +348,7 @@ void Project(double fov,double asp,double dim)
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
 }
-
+/*
 void Print(const char* format , ...)
 {
    char    buf[LEN];
@@ -309,25 +360,35 @@ void Print(const char* format , ...)
    while (*ch)
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,*ch++);
 }
-
+*/
 void display()
 {
    const double len=2.0;  
    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
    glEnable(GL_DEPTH_TEST);
 
+
+
    glLoadIdentity();
-   if (mode)
+//glTranslated(upDown,leftRight,0);
+
+   if (!mode)
    {
+      
       double Ex = -2*dim*Sin(th)*Cos(ph);
       double Ey = +2*dim        *Sin(ph);
       double Ez = +2*dim*Cos(th)*Cos(ph);
       gluLookAt(Ex,Ey,Ez , 0,0,0 , 0,Cos(ph),0);
    }
    else
+   
    {
+      printf("translating by %d, 0, %d\n",upDown, leftRight);
+     // glTranslated(upDown,0,leftRight);
       glRotatef(ph,1,0,0);
       glRotatef(th,0,1,0);
+      glTranslated(upDown,height,leftRight);
+
    }
 
    glShadeModel(smooth ? GL_SMOOTH : GL_FLAT);
@@ -339,7 +400,7 @@ void display()
         float Specular[]  = {0.01*specular,0.01*specular,0.01*specular,1.0};
         float Position[]  = {distance*Cos(zh),ylight,distance*Sin(zh),1.0};
         glColor3f(1,1,1);
-        ball(Position[0],Position[1],Position[2] , 0.1);
+        ball(Position[0],Position[1],Position[2] ,4);
         glEnable(GL_NORMALIZE);
         glEnable(GL_LIGHTING);
         glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,local);
@@ -354,7 +415,7 @@ void display()
    else
      glDisable(GL_LIGHTING);
 
-   //  Draw pyramid and tent
+  
    drawWorld(+1,0,0 , 0.5,0.5,0.5 , 0);
    
 
@@ -383,6 +444,7 @@ void display()
 
    glFlush();
    glutSwapBuffers();
+
 }
 
 
@@ -404,9 +466,9 @@ void special(int key,int x,int y)
    else if (key == GLUT_KEY_DOWN)
       ph -= 5;
    else if (key == GLUT_KEY_PAGE_DOWN)
-      dim += 0.1;
+      dim += 0.5;
    else if (key == GLUT_KEY_PAGE_UP && dim>1)
-      dim -= 0.1;
+      dim -= 0.5;
    th %= 360;
    ph %= 360;
    Project(mode?fov:0,asp,dim);
@@ -427,6 +489,18 @@ void key(unsigned char ch,int x,int y)
       mode = 1-mode;
    else if (ch == 'm' || ch == 'M')
       move = 1-move;
+   else if (ch == 'd')
+      upDown += 5;
+   else if (ch == 'a')
+      upDown -= 5;
+   else if (ch == 's')
+      leftRight += 5;
+   else if (ch == 'w')
+      leftRight -= 5;
+   else if (ch == 'q')
+      height += 5;
+   else if (ch == 'e')
+      height -= 5;
    else if (ch == '.')
       zh += 2;
    else if (ch == ',')
@@ -436,9 +510,9 @@ void key(unsigned char ch,int x,int y)
    else if (ch == '+' && ch<179)
       fov++;
    else if (ch=='[')
-      ylight -= 0.1;
+      ylight -= 5;
    else if (ch==']')
-      ylight += 0.1;
+      ylight += 5;
    Project(mode?fov:0,asp,dim);
    glutIdleFunc(move?idle:NULL);
    glutPostRedisplay();

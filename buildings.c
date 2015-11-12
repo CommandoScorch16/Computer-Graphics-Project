@@ -43,13 +43,14 @@ glVertex3f(2.5,0,-4);
 glVertex3f(2.5,3,-4);
 glVertex3f(0.5,3,-4);
 
-//draw right roof
-glVertex3f(1.5,5,-4);
-glVertex3f(1.5,5,0);
-glVertex3f(-0.5,3,0);
-glVertex3f(-0.5,3,-4);
+//draw roof
+glVertex3f(2.5,3,0);
+glVertex3f(0.5,3,0);
+glVertex3f(0.5,3,-4);
+glVertex3f(2.5,3,-4);
 
 glEnd();
+
 
 glPopMatrix();
 
