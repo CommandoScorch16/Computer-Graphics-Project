@@ -145,8 +145,19 @@ y2 = 94.0;
 		Print("L");	
                 
 		int i1;
-		for (i1 = 0; i1 < 6; i1++)
+		for (i1 = 0; i1 < 5; i1++){
+			//draw north side
 			smallHouse1(0.6,0.6,0.6,0.0,x2-2-i1*5,0.0,y2);
+			
+			//draw east side
+			smallHouse1(0.6,0.6,0.6,270.0,x1,0.0,y1+i1*5);		
+			
+			//draw west side
+			smallHouse1(0.6,0.6,0.6,90.0,x2,0.0,y2-i1*5);
+			
+			//draw south side
+			smallHouse1(0.6,0.6,0.6,180.0,x1+5+i1*5,0.0,y1+0);	
+		}
 		double x0 = x1;
                 x1 = x2 + streetWidth;
                 x2 = (x2-x0) + x2 + streetWidth;
