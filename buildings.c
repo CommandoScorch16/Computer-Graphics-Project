@@ -315,14 +315,66 @@ glVertex3f(x+0.1,3.5,z4);
 glVertex3f(x,3.5,z3);
 
 
+glVertex3f(x,3.4,z3);
+glVertex3f(x+0.05,3.5,z3);
+glVertex3f(x+0.5,3.2,z4);
+glVertex3f(x+0.5,3.1,z4);
+
+
+glVertex3f(x,3.2,z3);
+glVertex3f(x+0.05,3.1,z3);
+glVertex3f(x+0.5,3.4,z4);
+glVertex3f(x+0.5,3.5,z4);
+
 //glVertex3f(9.45,3.0,0);
 x+=0.265;
 z3+=0.326;
 z4+=0.326;
 }
 
+
+//now draw the top sign
+
+glVertex3f(7.2,5.0,-1.35);//-1.25);
+glVertex3f(6.8,5.0,0.0);
+glVertex3f(6.8,5.6,0.0);
+glVertex3f(7.2,5.6,-1.35);
+
+
+//draw right sign
+glVertex3f(6.8,5.0,0.0);
+glVertex3f(3.5,5.0,1.2);
+glVertex3f(3.5,5.6,1.2);
+glVertex3f(6.8,5.6,0.0);
+
+//draw left sign
+glVertex3f(7.2,5.0,-1.35);
+glVertex3f(5,5.0,-3.9);
+glVertex3f(5,5.6,-3.9);
+glVertex3f(7.2,5.6,-1.35);
+
+
 glEnd();
 
+glBegin(GL_TRIANGLES);
+
+//draw right triangle for sign
+glVertex3f(3.5,5.0,1.2);
+glVertex3f(3.5,5.6,1.2);
+glVertex3f(3.2,5.0,1.3);
+//draw left triangle for sign
+
+glVertex3f(5,5.0,-3.9);
+glVertex3f(5,5.6,-3.9);
+glVertex3f(4.7,5.0,-4.25);
+
+//draw top tirangle for sign
+
+glVertex3f(6.8,5.6,0.0);
+glVertex3f(7.2,5.6,-1.35);
+glVertex3f(7.0,5.78,-.675);
+
+glEnd();
 
 glPopMatrix();
 }
