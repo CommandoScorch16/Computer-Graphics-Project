@@ -270,6 +270,57 @@ glVertex3f(7.0,3.0,0.0);
 glVertex3f(8,3.0,-1.0);
 glVertex3f(9.3,3.0,-0.1);
 
+
+//right wall
+double m;
+double u = 0.0;
+double z1 = 3.5;
+double z2 = 3.46;
+for (m = 0.0; m < 24.0; m++){
+calculateNormal1(u,3.0,z1,u+0.1,3.0,z2,u+0.1,3.5,z2,-1.0);
+glVertex3f(u,3.0,z1);
+glVertex3f(u+0.1,3.0,z2);
+glVertex3f(u+0.1,3.5,z2);
+glVertex3f(u,3.5,z1);
+
+if (m != 23.0){
+glVertex3f(u,3.4,z1);
+glVertex3f(u+0.05,3.5,z1);
+glVertex3f(u+0.51,3.2,z2);
+glVertex3f(u+0.46,3.1,z2);
+
+glVertex3f(u,3.2,z1);
+glVertex3f(u+0.05,3.1,z1);
+glVertex3f(u+0.51,3.4,z2);
+glVertex3f(u+0.46,3.5,z2);
+}
+
+u += 0.4;
+z1-=0.15;
+z2-=0.15;
+}
+
+//left wall
+double m1;
+double x = 3.2;
+double z3 = -7.7;
+double z4 = -7.6;
+for (m1 = 0.0; m1<24.0;m1+=1)
+{
+
+calculateNormal1(x,3.0,z3,x+0.1,3.0,z4,x+0.1,3.5,z4,1.0);
+glVertex3f(x,3.0,z3);
+glVertex3f(x+0.1,3.0,z4);
+glVertex3f(x+0.1,3.5,z4);
+glVertex3f(x,3.5,z3);
+
+
+//glVertex3f(9.45,3.0,0);
+x+=0.265;
+z3+=0.326;
+z4+=0.326;
+}
+
 glEnd();
 
 
