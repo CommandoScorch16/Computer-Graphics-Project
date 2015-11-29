@@ -276,6 +276,7 @@ double m;
 double u = 0.0;
 double z1 = 3.5;
 double z2 = 3.46;
+double z0 = 3.3;
 for (m = 0.0; m < 24.0; m++){
 calculateNormal1(u,3.0,z1,u+0.1,3.0,z2,u+0.1,3.5,z2,-1.0);
 glVertex3f(u,3.0,z1);
@@ -286,35 +287,37 @@ glVertex3f(u,3.5,z1);
 if (m != 23.0){
 glVertex3f(u,3.4,z1);
 glVertex3f(u+0.05,3.5,z1);
-glVertex3f(u+0.51,3.2,z2);
-glVertex3f(u+0.46,3.1,z2);
+glVertex3f(u+0.51,3.2,z0);
+glVertex3f(u+0.46,3.1,z0);
 
 glVertex3f(u,3.2,z1);
 glVertex3f(u+0.05,3.1,z1);
-glVertex3f(u+0.51,3.4,z2);
-glVertex3f(u+0.46,3.5,z2);
+glVertex3f(u+0.51,3.4,z0);
+glVertex3f(u+0.46,3.5,z0);
 }
 
 u += 0.4;
 z1-=0.15;
 z2-=0.15;
+z0-=0.15;
 }
 
 //left wall
 double m1;
 double x = 3.2;
 double z3 = -7.7;
-double z4 = -7.6;
+double z5 = -7.6;
+double z4 = -7.3;
 for (m1 = 0.0; m1<24.0;m1+=1)
 {
 
 calculateNormal1(x,3.0,z3,x+0.1,3.0,z4,x+0.1,3.5,z4,1.0);
 glVertex3f(x,3.0,z3);
-glVertex3f(x+0.1,3.0,z4);
-glVertex3f(x+0.1,3.5,z4);
+glVertex3f(x+0.1,3.0,z5);
+glVertex3f(x+0.1,3.5,z5);
 glVertex3f(x,3.5,z3);
 
-
+if (m1 != 23.0){
 glVertex3f(x,3.4,z3);
 glVertex3f(x+0.05,3.5,z3);
 glVertex3f(x+0.5,3.2,z4);
@@ -325,16 +328,17 @@ glVertex3f(x,3.2,z3);
 glVertex3f(x+0.05,3.1,z3);
 glVertex3f(x+0.5,3.4,z4);
 glVertex3f(x+0.5,3.5,z4);
-
+}
 //glVertex3f(9.45,3.0,0);
 x+=0.265;
 z3+=0.326;
 z4+=0.326;
+z5+=0.326;
 }
 
 
 //now draw the top sign
-
+calculateNormal1(7.2,5.0,-1.35,6.8,5.0,0.0,6.8,5.6,0.0,1.0);
 glVertex3f(7.2,5.0,-1.35);//-1.25);
 glVertex3f(6.8,5.0,0.0);
 glVertex3f(6.8,5.6,0.0);
@@ -342,12 +346,14 @@ glVertex3f(7.2,5.6,-1.35);
 
 
 //draw right sign
+calculateNormal1(6.8,5.0,0.0,3.5,5.0,1.2,3.5,5.6,1.2,1.0);
 glVertex3f(6.8,5.0,0.0);
 glVertex3f(3.5,5.0,1.2);
 glVertex3f(3.5,5.6,1.2);
 glVertex3f(6.8,5.6,0.0);
 
 //draw left sign
+calculateNormal1(7.2,5.0,-1.35,5.0,5.0,-3.9,5.0,5.6,-3.9,-1.0);
 glVertex3f(7.2,5.0,-1.35);
 glVertex3f(5,5.0,-3.9);
 glVertex3f(5,5.6,-3.9);
@@ -359,17 +365,19 @@ glEnd();
 glBegin(GL_TRIANGLES);
 
 //draw right triangle for sign
+calculateNormal1(3.5,5.0,1.2,3.5,5.6,1.2,3.2,5.0,1.3,-1.0);
 glVertex3f(3.5,5.0,1.2);
 glVertex3f(3.5,5.6,1.2);
 glVertex3f(3.2,5.0,1.3);
-//draw left triangle for sign
 
+//draw left triangle for sign
+calculateNormal1(5.0,5.0,-3.9,5.0,5.6,-3.9,4.7,5.0,-4.25,1.0);
 glVertex3f(5,5.0,-3.9);
 glVertex3f(5,5.6,-3.9);
 glVertex3f(4.7,5.0,-4.25);
 
 //draw top tirangle for sign
-
+calculateNormal1(6.8,5.6,0.0,7.2,5.6,-1.35,7.0,5.78,-.675,-1.0);
 glVertex3f(6.8,5.6,0.0);
 glVertex3f(7.2,5.6,-1.35);
 glVertex3f(7.0,5.78,-.675);
@@ -444,16 +452,85 @@ glVertex3f(4.714,2.5,7.0);
 
 
 //draw front of cross
+calculateNormal1(1.9,4.0,0.45,2.1,4.0,0.45,2.1,5.9,0.45,1.0);
 glVertex3f(1.9,4.0,0.45);
 glVertex3f(2.1,4.0,0.45);
 glVertex3f(2.1,5.9,0.45);
 glVertex3f(1.9,5.9,0.45);
 
-//draw side of cross
+//draw back of cross
+calculateNormal1(1.9,4.0,0.65,2.1,4.0,0.65,2.1,5.0,0.65,-1.0);
+glVertex3f(1.9,4.0,0.65);
+glVertex3f(2.1,4.0,0.65);
+glVertex3f(2.1,5.9,0.65);
+glVertex3f(1.9,5.9,0.65);
+
+//draw right side of cross
+calculateNormal1(2.1,4.0,0.45,2.1,4.0,0.65,2.1,5.9,0.65,1.0);
+glVertex3f(2.1,4.0,0.45);
+glVertex3f(2.1,4.0,0.65);
+glVertex3f(2.1,5.9,0.65);
+glVertex3f(2.1,5.9,0.45);
+
+//draw left side of cross
+calculateNormal1(1.9,5.9,0.65,1.9,5.9,0.45,1.9,4.0,0.45,-1.0);
+glVertex3f(1.9,5.9,0.65);
+glVertex3f(1.9,5.9,0.45);
+glVertex3f(1.9,4.0,0.45);
+glVertex3f(1.9,4.0,0.65);
+
+//draw top of cross
+calculateNormal1(2.1,5.9,0.65,2.1,5.9,0.45,1.9,5.9,0.65,-1.0);
+glVertex3f(2.1,5.9,0.65);
+glVertex3f(2.1,5.9,0.45);
+glVertex3f(1.9,5.9,0.45);
+glVertex3f(1.9,5.9,0.65);
+
+
+
+
+
+//draw cross of cross
+calculateNormal1(1.4,5.5,0.45,2.6,5.5,0.45,2.6,5.3,0.45,-1.0);
 glVertex3f(1.4,5.5,0.45);
 glVertex3f(2.6,5.5,0.45);
 glVertex3f(2.6,5.3,0.45);
 glVertex3f(1.4,5.3,0.45);
+
+//draw back
+calculateNormal1(1.4,5.5,0.65,2.6,5.5,0.65,2.6,5.3,0.65,1.0);
+glVertex3f(1.4,5.5,0.65);
+glVertex3f(2.6,5.5,0.65);
+glVertex3f(2.6,5.3,0.65);
+glVertex3f(1.4,5.3,0.65);
+
+//draw top
+calculateNormal1(1.4,5.5,0.65,1.4,5.5,0.45,2.6,5.5,0.45,1.0);
+glVertex3f(1.4,5.5,0.65);
+glVertex3f(1.4,5.5,0.45);
+glVertex3f(2.6,5.5,0.45);
+glVertex3f(2.6,5.5,0.65);
+
+//draw bottom
+calculateNormal1(2.6,5.3,0.65,2.6,5.3,0.45,1.4,5.3,0.45,1.0);
+glVertex3f(2.6,5.3,0.65);
+glVertex3f(2.6,5.3,0.45);
+glVertex3f(1.4,5.3,0.45);
+glVertex3f(1.4,5.3,0.65);
+
+//draw right side
+calculateNormal1(2.6,5.3,0.65,2.6,5.3,0.45,2.6,5.5,0.45,-1.0);
+glVertex3f(2.6,5.3,0.65);
+glVertex3f(2.6,5.3,0.45);
+glVertex3f(2.6,5.5,0.45);
+glVertex3f(2.6,5.5,0.65);
+
+//draw left side
+calculateNormal1(1.4,5.3,0.45,1.4,5.3,0.65,1.4,5.5,0.65,-1.0);
+glVertex3f(1.4,5.3,0.45);
+glVertex3f(1.4,5.3,0.65);
+glVertex3f(1.4,5.5,0.65);
+glVertex3f(1.4,5.5,0.45);
 
 
 glEnd();

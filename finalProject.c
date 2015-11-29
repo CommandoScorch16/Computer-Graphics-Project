@@ -256,9 +256,9 @@ static void drawWorld(double x,double y,double z,
    //glRotated(th,0,1,0);
    //glScaled(dx,dy,dz); 
    DEM();
-   //drawRoads();
+   drawRoads();
    //saloon(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
-   occidentalHotel(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+   //occidentalHotel(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //church(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    drawBuildings();
    skyBox(200);
