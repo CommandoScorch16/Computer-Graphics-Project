@@ -45,9 +45,11 @@ float zmag=1;          //  DEM magnification
 
 char* groundTexture = "ground.bmp";
 char* sky = "sky.bmp";
+char* bc = "birdCageBanner.bmp";
 unsigned int a;
 unsigned int b;
 unsigned int c;
+unsigned int d;
 int height = -20;
 int upDown,leftRight=0;
 #define LEN 8192  //  Maximum length of text string
@@ -231,6 +233,10 @@ void DEM()
 
 }
 
+static void texture()
+{
+}
+
 static void drawWorld(double x,double y,double z,
                  double dx,double dy,double dz,
                  double th)
@@ -256,12 +262,15 @@ static void drawWorld(double x,double y,double z,
    //glRotated(th,0,1,0);
    //glScaled(dx,dy,dz); 
    DEM();
-   drawRoads();
+   //drawRoads();
    //saloon(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //occidentalHotel(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //church(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+   //store(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+   birdCage(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    drawBuildings();
    skyBox(200);
+   //texture();
     
 
    //glPopMatrix();
@@ -564,7 +573,7 @@ int main(int argc,char* argv[])
    
    a = LoadTexBMP(groundTexture);
    b = LoadTexBMP(sky);
-
+   d = LoadTexBMP(bc);
    glutMainLoop();
    return 0;
 }

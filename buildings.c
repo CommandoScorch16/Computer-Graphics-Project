@@ -1,5 +1,7 @@
 #include "CSCIx229.h"
 
+unsigned int birdCageGraphic;
+
 
 void calculateNormal1(double x1,double y1,double z1,double x2,double y2,double z2,double x3,double y3,double z3, double sign)
 {
@@ -552,6 +554,139 @@ glVertex3f(2.0,4.4,7.0);
 
 glEnd();
 glPopMatrix();
+}
+
+void store(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
+
+
+
+glTranslated(tx,ty,tz);
+//glScaled(sx,sy,sz);
+glRotated(theta,0,1,0);
+
+
+glBegin(GL_QUADS);
+double height1=5;
+
+
+//draw front
+calculateNormal1(0,0,0,4,0,0,4,height1-.25,0,1.0);
+glVertex3f(0,0,0);
+glVertex3f(4,0,0);
+glVertex3f(4,height1-.25,0);
+glVertex3f(0,height1-.25,0);
+
+//now draw the sides
+double numOfSides;
+
+double dz = 0;
+
+for (numOfSides=1.0; numOfSides<6.0; numOfSides+=1.0){
+
+//draw left side
+calculateNormal1(0,0,dz,0,height1-(.25*numOfSides),dz,0,height1-(.25*numOfSides),dz+2,1.0);
+glVertex3f(0,0,dz);
+glVertex3f(0,height1-(.25*numOfSides),dz);
+glVertex3f(0,height1-(.25*numOfSides),dz+2);
+glVertex3f(0,0,dz+2);
+
+//draw right side
+calculateNormal1(4,0,dz,4,height1-(.25*numOfSides),dz,4,height1-(.25*numOfSides),dz+2,-1.0);
+glVertex3f(4,0,dz);
+glVertex3f(4,height1-(.25*numOfSides),dz);
+glVertex3f(4,height1-(.25*numOfSides),dz+2);
+glVertex3f(4,0,dz+2);
+
+
+//now draw these a roof
+calculateNormal1(0,height1-(.25*numOfSides),dz,4,height1-(.25*numOfSides),dz,4,height1-(.25*numOfSides),dz+2,1.0);
+glVertex3f(0,height1-(.25*numOfSides),dz);
+glVertex3f(4,height1-(.25*numOfSides),dz);
+glVertex3f(4,height1-(.25*numOfSides),dz+2);
+glVertex3f(0,height1-(.25*numOfSides),dz+2);
+
+
+if (numOfSides != 5.0){
+//now for some bondo at the top back
+calculateNormal1(4.0,height1-(.25*numOfSides),dz+2,0,height1-(.25*numOfSides),dz+2,0,height1-(.5*numOfSides),dz+2,-1.0);
+glVertex3f(4,height1-(.25*numOfSides),dz+2);
+glVertex3f(0,height1-(.25*numOfSides),dz+2);
+glVertex3f(0,height1-(.5*numOfSides),dz+2);
+glVertex3f(4,height1-(.5*numOfSides),dz+2);
+}
+
+dz+=2;
+}
+
+//draw back
+calculateNormal1(0,0,10,4,0,10,4,3.75,10,-1.0);
+glVertex3f(0,0,10);
+glVertex3f(4,0,10);
+glVertex3f(4,3.75,10);
+glVertex3f(0,3.75,10);
+
+glEnd();
+glPopMatrix();
+}
+
+
+void birdCage(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
+
+birdCageGraphic = LoadTexBMP("ground.bmp");
+
+glTranslated(tx,ty,tz);
+//glScaled(sx,sy,sz);
+glRotated(theta,0,1,0);
+
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, birdCageGraphic);
+
+glBegin(GL_QUADS);
+
+glColor3f(1.0,0.8431,0.7725);
+
+//draw front
+glTexCoord2f(0,0); glVertex3f(0,2.5,-1.01);
+glTexCoord2f(1,0); glVertex3f(4,2.5,-1.01);
+glTexCoord2f(1,1); glVertex3f(4,3.5,-1.01);
+glTexCoord2f(0,1); glVertex3f(0,3.5,-1.01);
+
+glVertex3f(0,0,0);
+glVertex3f(4,0,0);
+glVertex3f(4,3.5,0);
+glVertex3f(0,3.5,0);
+
+
+//now draw right side
+glVertex3f(0,0,0);
+glVertex3f(0,0,7);
+glVertex3f(0,3.25,7);
+glVertex3f(0,3.25,0);
+
+//now for the left
+glVertex3f(4,0,0);
+glVertex3f(4,0,7);
+glVertex3f(4,3.25,7);
+glVertex3f(4,3.25,0);
+
+//the back
+glVertex3f(4,0,7);
+glVertex3f(0,0,7);
+glVertex3f(0,3.25,7);
+glVertex3f(4,3.25,7);
+
+//and then the roof
+glVertex3f(4,3.25,7);
+glVertex3f(0,3.25,7);
+glVertex3f(0,3.25,0);
+glVertex3f(4,3.25,0);
+
+
+
+glEnd();
+glPopMatrix();
+
+glDisable(GL_TEXTURE_2D);
 }
 
 
