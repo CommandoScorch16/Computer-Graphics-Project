@@ -184,7 +184,7 @@ glEnd();
 glPopMatrix();
 }
 
-void occidentalHotel(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
+void occidentalHotel1(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
 
 
 
@@ -630,7 +630,7 @@ glPopMatrix();
 }
 
 
-void birdCage(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
+void birdCage1(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
 
 birdCageGraphic = LoadTexBMP("ground.bmp");
 

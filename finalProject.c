@@ -45,17 +45,18 @@ float zmag=1;          //  DEM magnification
 
 char* groundTexture = "ground.bmp";
 char* sky = "sky.bmp";
-char* bc = "birdCageBanner.bmp";
+char* bc = "bc1.bmp";
 unsigned int a;
 unsigned int b;
 unsigned int c;
 unsigned int d;
+unsigned int e,f,g,h,i;
 int height = -20;
 int upDown,leftRight=0;
 #define LEN 8192  //  Maximum length of text string
 
 static void skyBox(double D);
-
+void occidentalHotel(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
 
 void Print(const char* format , ...)
 {
@@ -67,6 +68,22 @@ void Print(const char* format , ...)
    va_end(args);
    while (*ch)
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,*ch++);
+}
+
+void calculateNormal2(double x1,double y1,double z1,double x2,double y2,double z2,double x3,double y3,double z3, double sign)
+{
+
+
+double r1x = x2-x1;
+double r1y = y2-y1;
+double r1z = z2-z1;
+
+double r2x = x2-x3;
+double r2y = y2-y3;
+double r2z = z2-z3;
+
+
+glNormal3f( sign*((r1y*r2z)-(r2y*r1z))  ,  sign*(-1*((r1x*r2z)-(r2x*r1z)))  ,  sign*((r1x*r2y)-(r2x*r1y)) );
 }
 
 
@@ -233,8 +250,326 @@ void DEM()
 
 }
 
-static void texture()
+
+
+
+void occidentalHotel(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
+
+
+
+glTranslated(tx,ty,tz);
+//glScaled(sx,sy,sz);
+glScaled(1.5,1.5,1.5);
+glRotated(theta,0,1,0);
+
+
+glBegin(GL_QUADS);
+
+//draw right face
+calculateNormal2(0.0,0.0,2.5,7.0,0.0,0.0,7.0,5.0,0.0,-1.0);
+glVertex3f(0.0,0.0,2.5);
+glVertex3f(7.0,0.0,0.0);
+glVertex3f(7.0,5.0,0.0);
+glVertex3f(0.0,5.0,2.5);
+
+glEnd();
+
+//draw top windows
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, g);
+glBegin(GL_QUADS);
+
+int now;
+double x11=0;
+double z11=2.5;
+
+for (now = 0; now < 5; now+=1)
 {
+calculateNormal2(x11,4.2,z11,x11+.5,4.2,z11-.2,x11+.5,3.2,z11-.2,1.0);
+glTexCoord2f(0,1); glVertex3f(x11,4.2,z11);
+glTexCoord2f(1,1); glVertex3f(x11+.5,4.2,z11-.2);
+glTexCoord2f(1,0); glVertex3f(x11+.5,3.2,z11-.2);
+glTexCoord2f(0,0); glVertex3f(x11,3.2,z11);
+
+
+x11+=1.2;
+z11-=.4;
+}
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+glBegin(GL_QUADS);
+//draw front skinny face
+calculateNormal2(7.0,0.0,0.0,7.3,0.0,-1.25,7.3,5.0,-1.25,-1.0);
+glVertex3f(7.0,0.0,0.0);
+glVertex3f(7.4,0.0,-1.25);//-1.25);
+glVertex3f(7.4,5.0,-1.25);//-1.25);
+glVertex3f(7.0,5.0,0.0);
+
+//draw left face
+calculateNormal2(7.4,0.0,-1.25,2.5,0.0,-7.0,2.5,5.0,-7.0,-1.0);
+glVertex3f(7.4,0.0,-1.25);
+glVertex3f(2.5,0.0,-7.0);
+glVertex3f(2.5,5.0,-7.0);
+glVertex3f(7.4,5.0,-1.25);
+
+//draw back
+calculateNormal2(2.5,0.0,-7.0,0.0,0.0,2.5,0.0,5.0,2.5,-1.0);
+glVertex3f(2.5,0.0,-7.0);
+glVertex3f(0.0,0.0,2.5);
+glVertex3f(0.0,5.0,2.5);
+glVertex3f(2.5,5.0,-7.0);
+
+
+glEnd();
+
+
+glBegin(GL_TRIANGLES);
+//draw roof
+calculateNormal2(7.0,5.0,0.0,2.5,5.0,-7.0,0.0,5.0,2.5,-1.0);
+glVertex3f(7.0,5.0,0.0);
+glVertex3f(2.5,5.0,-7.0);
+glVertex3f(0.0,5.0,2.5);
+
+calculateNormal2(7.4,5.0,-1.25,2.5,5.0,-7.0,7.0,5.0,0.0,-1.0);
+glVertex3f(7.4,5.0,-1.25);
+glVertex3f(2.5,5.0,-7.0);
+glVertex3f(7.0,5.0,0.0);
+
+glEnd();
+
+glBegin(GL_QUADS);
+
+//right balcony
+calculateNormal2(0.0,3.0,2.5,8.5,3.0,-.545,9.5,3.0,0.0,1.0);
+glVertex3f(0.0,3.0,2.5);
+glVertex3f(8.5,3.0,-.545);
+//glVertex3f(7.94,3.0,-.345);
+//glVertex3f(7.0,3.0,0.0);
+//glVertex3f(7.0,3.0,1.0);
+glVertex3f(9.5,3.0,0);
+glVertex3f(0.0,3.0,3.5);
+
+
+//left balcony
+calculateNormal2(2.5,3.0,-7.0,8.5,3.0,-.125,9.45,3.0,0.0,-1.0);
+glVertex3f(2.5,3.0,-7.0);
+glVertex3f(8.5,3.0,-.125);
+//glVertex3f(7.94,3.0,-.625);
+glVertex3f(9.45,3.0,0);
+glVertex3f(3.2,3.0,-7.7);
+
+
+//balcony bondo
+calculateNormal2(7.55,3.0,-2,7.0,3.0,0.0,8,3.0,-1.0,-1.0);
+glVertex3f(7.55,3.0,-2);//-1.25);
+glVertex3f(7.0,3.0,0.0);
+glVertex3f(8,3.0,-1.0);
+glVertex3f(9.3,3.0,-0.1);
+
+
+//right wall
+double m;
+double u = 0.0;
+double z1 = 3.5;
+double z2 = 3.46;
+double z0 = 3.3;
+for (m = 0.0; m < 24.0; m++){
+calculateNormal2(u,3.0,z1,u+0.1,3.0,z2,u+0.1,3.5,z2,-1.0);
+glVertex3f(u,3.0,z1);
+glVertex3f(u+0.1,3.0,z2);
+glVertex3f(u+0.1,3.5,z2);
+glVertex3f(u,3.5,z1);
+
+if (m != 23.0){
+glVertex3f(u,3.4,z1);
+glVertex3f(u+0.05,3.5,z1);
+glVertex3f(u+0.51,3.2,z0);
+glVertex3f(u+0.46,3.1,z0);
+
+glVertex3f(u,3.2,z1);
+glVertex3f(u+0.05,3.1,z1);
+glVertex3f(u+0.51,3.4,z0);
+glVertex3f(u+0.46,3.5,z0);
+}
+
+u += 0.4;
+z1-=0.15;
+z2-=0.15;
+z0-=0.15;
+}
+
+//left wall
+double m1;
+double x = 3.2;
+double z3 = -7.7;
+double z5 = -7.6;
+double z4 = -7.3;
+for (m1 = 0.0; m1<24.0;m1+=1)
+{
+
+calculateNormal2(x,3.0,z3,x+0.1,3.0,z4,x+0.1,3.5,z4,1.0);
+glVertex3f(x,3.0,z3);
+glVertex3f(x+0.1,3.0,z5);
+glVertex3f(x+0.1,3.5,z5);
+glVertex3f(x,3.5,z3);
+
+if (m1 != 23.0){
+glVertex3f(x,3.4,z3);
+glVertex3f(x+0.05,3.5,z3);
+glVertex3f(x+0.5,3.2,z4);
+glVertex3f(x+0.5,3.1,z4);
+
+
+glVertex3f(x,3.2,z3);
+glVertex3f(x+0.05,3.1,z3);
+glVertex3f(x+0.5,3.4,z4);
+glVertex3f(x+0.5,3.5,z4);
+}
+//glVertex3f(9.45,3.0,0);
+x+=0.265;
+z3+=0.326;
+z4+=0.326;
+z5+=0.326;
+}
+
+glEnd();
+
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, f);
+glBegin(GL_QUADS);
+
+//now draw the top sign
+calculateNormal2(7.2,5.0,-1.35,6.8,5.0,0.0,6.8,5.6,0.0,1.0);
+glTexCoord2f(1,0); glVertex3f(7.2,5.0,-1.35);//-1.25);
+glTexCoord2f(0,0); glVertex3f(6.8,5.0,0.0);
+glTexCoord2f(0,1); glVertex3f(6.8,5.6,0.0);
+glTexCoord2f(1,1); glVertex3f(7.2,5.6,-1.35);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, h);
+glBegin(GL_QUADS);
+//draw right sign
+calculateNormal2(6.8,5.0,0.0,3.5,5.0,1.2,3.5,5.6,1.2,1.0);
+glTexCoord2f(1,0); glVertex3f(6.8,5.0,0.0);
+glTexCoord2f(0,0); glVertex3f(3.5,5.0,1.2);
+glTexCoord2f(0,1); glVertex3f(3.5,5.6,1.2);
+glTexCoord2f(1,1); glVertex3f(6.8,5.6,0.0);
+
+glBindTexture(GL_TEXTURE_2D, h);
+//draw left sign
+calculateNormal2(7.2,5.0,-1.35,5.0,5.0,-3.9,5.0,5.6,-3.9,-1.0);
+glTexCoord2f(0,0); glVertex3f(7.2,5.0,-1.35);
+glTexCoord2f(1,0); glVertex3f(5,5.0,-3.9);
+glTexCoord2f(1,1); glVertex3f(5,5.6,-3.9);
+glTexCoord2f(0,1); glVertex3f(7.2,5.6,-1.35);
+
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+glBegin(GL_TRIANGLES);
+
+//draw right triangle for sign
+calculateNormal2(3.5,5.0,1.2,3.5,5.6,1.2,3.2,5.0,1.3,-1.0);
+glVertex3f(3.5,5.0,1.2);
+glVertex3f(3.5,5.6,1.2);
+glVertex3f(3.2,5.0,1.3);
+
+//draw left triangle for sign
+calculateNormal2(5.0,5.0,-3.9,5.0,5.6,-3.9,4.7,5.0,-4.25,1.0);
+glVertex3f(5,5.0,-3.9);
+glVertex3f(5,5.6,-3.9);
+glVertex3f(4.7,5.0,-4.25);
+
+//draw top tirangle for sign
+calculateNormal2(6.8,5.6,0.0,7.2,5.6,-1.35,7.0,5.78,-.675,-1.0);
+glVertex3f(6.8,5.6,0.0);
+glVertex3f(7.2,5.6,-1.35);
+glVertex3f(7.0,5.78,-.675);
+
+glEnd();
+
+glPopMatrix();
+}
+
+
+static void birdCage(double sx, double sy, double sz, double theta, double tx, double ty, double tz)
+{
+
+
+glPushMatrix();
+
+glTranslated(tx,ty,tz);
+glScaled(sx,sy,sz);
+glRotated(theta,0,1,0);
+
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, d);
+
+glBegin(GL_QUADS);
+
+glColor3f(1.0,0.8431,0.7725);
+
+
+//draw front
+glTexCoord2f(1,0); glVertex3f(0,0,-0.03);
+glTexCoord2f(0,0); glVertex3f(4,0,-0.03);
+glTexCoord2f(0,1); glVertex3f(4,3.5,-0.03);
+glTexCoord2f(1,1); glVertex3f(0,3.5,-0.03);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+//glClear(GL_COLOR_BUFFER_BIT);
+
+
+glBegin(GL_QUADS);
+
+//glColor3f(1.0,0.8431,0.7725);
+
+glVertex3f(0,0,0);
+glVertex3f(4,0,0);
+glVertex3f(4,3.5,0);
+glVertex3f(0,3.5,0);
+
+
+//now draw right side
+glVertex3f(0,0,0);
+glVertex3f(0,0,7);
+glVertex3f(0,3.25,7);
+glVertex3f(0,3.25,0);
+
+//now for the left
+glVertex3f(4,0,0);
+glVertex3f(4,0,7);
+glVertex3f(4,3.25,7);
+glVertex3f(4,3.25,0);
+
+//the back
+glVertex3f(4,0,7);
+glVertex3f(0,0,7);
+glVertex3f(0,3.25,7);
+glVertex3f(4,3.25,7);
+
+//and then the roof
+glVertex3f(4,3.25,7);
+glVertex3f(0,3.25,7);
+glVertex3f(0,3.25,0);
+glVertex3f(4,3.25,0);
+
+
+
+glEnd();
+glPopMatrix();
+
+
+
 }
 
 static void drawWorld(double x,double y,double z,
@@ -264,10 +599,12 @@ static void drawWorld(double x,double y,double z,
    DEM();
    //drawRoads();
    //saloon(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
-   //occidentalHotel(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+   
+   //birdCage(1.0,1.0,1.0,5.0,5.0,5.0,0.0);
+   occidentalHotel(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //church(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //store(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
-   birdCage(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+   //birdCage(1.0,1.0,1.0,5.0,5.0,5.0,0.0);
    drawBuildings();
    skyBox(200);
    //texture();
@@ -574,6 +911,11 @@ int main(int argc,char* argv[])
    a = LoadTexBMP(groundTexture);
    b = LoadTexBMP(sky);
    d = LoadTexBMP(bc);
+   e = LoadTexBMP("wood1.bmp");
+   f = LoadTexBMP("hotel.bmp");
+   g = LoadTexBMP("window1.bmp");
+   h = LoadTexBMP("OCCIDENTALSIGN.bmp");
+   i = LoadTexBMP("americanFlag.bmp");
    glutMainLoop();
    return 0;
 }
