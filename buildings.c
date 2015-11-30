@@ -26,7 +26,7 @@ glPushMatrix();
 
 printf("glTranslated(%f, %f, %f);", tx,ty,tz);
 glTranslated(tx,ty,tz);
-//glScaled(sx,sy,sz);
+glScaled(sx,sy,sz);
 glRotated(theta,0,1,0);
 
 
@@ -85,10 +85,11 @@ glPopMatrix();
 
 void saloon(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
 
+glPushMatrix();
 
-
-glTranslated(tx,ty,tz);
-//glScaled(sx,sy,sz);
+printf("SALLON %f, %f, %f", tx,ty,tz);
+glTranslated(ty,tx,tz);
+glScaled(sx,sy,sz);
 glRotated(theta,0,1,0);
 
 

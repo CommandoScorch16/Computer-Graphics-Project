@@ -15,15 +15,15 @@
 int axes=1;       //  Display axes
 int mode=1;       //  Projection mode
 int move=1;       //  Move light
-int th=45;         //  Azimuth of view angle
-int ph=48;         //  Elevation of view angle
+int th=200;         //  Azimuth of view angle
+int ph=20;         //  Elevation of view angle
 int fov=55;       //  Field of view (for perspective)
 int light=1;      //  Lighting
 double asp=1;     //  Aspect ratio
 double dim=42.0;   //  Size of world
 // Light values
 int one       =   1;  // Unit value
-int distance  =   50;  // Light distance
+int distance  =   80;  // Light distance
 int inc       =  10;  // Ball increment
 int smooth    =   1;  // Smooth/Flat shading
 int local     =   0;  // Local Viewer Model
@@ -57,6 +57,12 @@ int upDown,leftRight=0;
 
 static void skyBox(double D);
 void occidentalHotel(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
+
+static void birdCage(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
+
+static void store1(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
+
+static void saloon1(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
 
 void Print(const char* format , ...)
 {
@@ -151,7 +157,8 @@ y2 = 94.0;
 	for (j = 0; j < 5; j++)
 	
 	{       //printf("x1 is %f, and x2 is %f\n",x1 ,x2);
-        	glBegin(GL_QUADS);
+        	
+		glBegin(GL_QUADS);
 		glColor3f(0,0.5,0.7);
 		glVertex3f(x1,h,y1);
 		glVertex3f(x2,h,y1);
@@ -163,19 +170,36 @@ y2 = 94.0;
 		//Print(place);
 		Print("L");	
                 
-		int i1;
-		for (i1 = 0; i1 < 5; i1++){
+		double i1;
+		for (i1 = 0.0; i1 < 5.0; i1++){
+			
+			if ((i == 0) && (j == 1) && (i1 == 1.0)){
+			
+			occidentalHotel(1.0,1.0,1.0,330.0,x2-2.6-i1*5,0.0,y2-4.0);
+			
+			}
+			else if ((i == 0) && (j == 0) && (i1 == 4.0)){
+			birdCage(0.6,0.6,0.6,180.0,x2-2-i1*5,0.0,y2);
+			}
+			else {
 			//draw north side
-			smallHouse1(0.6,0.6,0.6,0.0,x2-2-i1*5,0.0,y2);
+			if (((int)i1)%2 == 0)
+			smallHouse1(0.7,0.7,0.7,0.0,x2-3.5-i1*5,0.0,y2);
+			else
+			store1(0.5,0.5,0.5,180.0,x2-2-i1*5,0.0,y2);
 			
 			//draw east side
-			smallHouse1(0.6,0.6,0.6,270.0,x1,0.0,y1+i1*5);		
+			if (((int)i1)%3 == 0)
+			smallHouse1(0.7,0.7,0.7,270.0,x1,0.0,y1+i1*5);		
+			else
+			saloon1(0.5,0.5,0.5,90,x1,0.0,y1+i1*5.0);
 			
 			//draw west side
-			smallHouse1(0.6,0.6,0.6,90.0,x2,0.0,y2-i1*5);
+			smallHouse1(0.7,0.7,0.7,90.0,x2,0.0,y2-i1*5);
 			
 			//draw south side
-			smallHouse1(0.6,0.6,0.6,180.0,x1+5+i1*5,0.0,y1+0);	
+			store1(0.5,0.5,0.5,0.0,x1+5+i1*5,0.0,y1+0);	
+			}
 		}
 		double x0 = x1;
                 x1 = x2 + streetWidth;
@@ -255,11 +279,11 @@ void DEM()
 
 void occidentalHotel(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
 
-
+glPushMatrix();
 
 glTranslated(tx,ty,tz);
-//glScaled(sx,sy,sz);
-glScaled(1.5,1.5,1.5);
+glScaled(sx,sy,sz);
+//glScaled(1.5,1.5,1.5);
 glRotated(theta,0,1,0);
 
 
@@ -498,6 +522,163 @@ glEnd();
 glPopMatrix();
 }
 
+static void saloon1(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
+
+glPushMatrix();
+
+printf("SALLON %f, %f, %f", tx,ty,tz);
+glTranslated(tx,ty,tz);
+glScaled(sx,sy,sz);
+glRotated(theta,0,1,0);
+
+glBegin(GL_QUADS);
+
+glColor3f(0.9,0.0,0.0);
+//draw front
+glVertex3f(0,0,0);
+glVertex3f(5,0,0);
+glVertex3f(5,6,0);
+glVertex3f(0,6,0);
+
+//draw right side
+glVertex3f(0,0,0);
+glVertex3f(0,4.5,0);
+glVertex3f(0,4.5,7);
+glVertex3f(0,0,7);
+
+//draw left side
+glVertex3f(5,0,0);
+glVertex3f(5,4.5,0);
+glVertex3f(5,4.5,7);
+glVertex3f(5,0,7);
+
+//draw back
+glVertex3f(0,0,7);
+glVertex3f(5,0,7);
+glVertex3f(5,4.5,7);
+glVertex3f(0,4.5,7);
+
+//draw roof
+glVertex3f(0,4.5,0);
+glVertex3f(5,4.5,0);
+glVertex3f(5,4.5,7);
+glVertex3f(0,4.5,7);
+
+//draw balcony
+glVertex3f(0,3,0);
+glVertex3f(5,3,0);
+glVertex3f(5,3,-2);
+glVertex3f(0,3,-2);
+
+//draw right balcony railing
+double i;
+for (i = -2.0; i < 0.0; i+=0.25)
+{
+glVertex3f(5,3,i);
+glVertex3f(5,3,i+0.15);
+glVertex3f(5,3.5,i+0.15);
+glVertex3f(5,3.5,i);
+}
+
+glColor3f(0.4,0.4,0.4);
+//draw front balconay railing
+for (i = 5.0; i > 0.0; i-=0.25)
+{
+glVertex3f(i,3,-2);
+glVertex3f(i-0.15,3,-2);
+glVertex3f(i-0.15,3.5,-2);
+glVertex3f(i,3.5,-2);
+}
+
+//draw left balcony railing
+for (i = -2.0; i < 0.0; i+=0.25)
+{
+glVertex3f(0,3,i);
+glVertex3f(0,3,i+0.15);
+glVertex3f(0,3.5,i+0.15);
+glVertex3f(0,3.5,i);
+}
+
+
+
+glEnd();
+glPopMatrix();
+}
+
+
+static void store1(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
+
+glPushMatrix();
+glTranslated(tx,ty,tz);
+glScaled(sx,sy,sz);
+glRotated(theta,0,1,0);
+
+
+glBegin(GL_QUADS);
+double height1=5;
+
+
+//draw front
+calculateNormal2(0,0,0,4,0,0,4,height1-.25,0,1.0);
+glVertex3f(0,0,0);
+glVertex3f(4,0,0);
+glVertex3f(4,height1-.25,0);
+glVertex3f(0,height1-.25,0);
+
+//now draw the sides
+double numOfSides;
+
+double dz = 0;
+
+for (numOfSides=1.0; numOfSides<6.0; numOfSides+=1.0){
+
+//draw left side
+calculateNormal2(0,0,dz,0,height1-(.25*numOfSides),dz,0,height1-(.25*numOfSides),dz+2,1.0);
+glVertex3f(0,0,dz);
+glVertex3f(0,height1-(.25*numOfSides),dz);
+glVertex3f(0,height1-(.25*numOfSides),dz+2);
+glVertex3f(0,0,dz+2);
+
+//draw right side
+calculateNormal2(4,0,dz,4,height1-(.25*numOfSides),dz,4,height1-(.25*numOfSides),dz+2,-1.0);
+glVertex3f(4,0,dz);
+glVertex3f(4,height1-(.25*numOfSides),dz);
+glVertex3f(4,height1-(.25*numOfSides),dz+2);
+glVertex3f(4,0,dz+2);
+
+
+//now draw these a roof
+calculateNormal2(0,height1-(.25*numOfSides),dz,4,height1-(.25*numOfSides),dz,4,height1-(.25*numOfSides),dz+2,1.0);
+glVertex3f(0,height1-(.25*numOfSides),dz);
+glVertex3f(4,height1-(.25*numOfSides),dz);
+glVertex3f(4,height1-(.25*numOfSides),dz+2);
+glVertex3f(0,height1-(.25*numOfSides),dz+2);
+
+
+if (numOfSides != 5.0){
+//now for some bondo at the top back
+calculateNormal2(4.0,height1-(.25*numOfSides),dz+2,0,height1-(.25*numOfSides),dz+2,0,height1-(.5*numOfSides),dz+2,-1.0);
+glVertex3f(4,height1-(.25*numOfSides),dz+2);
+glVertex3f(0,height1-(.25*numOfSides),dz+2);
+glVertex3f(0,height1-(.5*numOfSides),dz+2);
+glVertex3f(4,height1-(.5*numOfSides),dz+2);
+}
+
+dz+=2;
+}
+
+//draw back
+calculateNormal2(0,0,10,4,0,10,4,3.75,10,-1.0);
+glVertex3f(0,0,10);
+glVertex3f(4,0,10);
+glVertex3f(4,3.75,10);
+glVertex3f(0,3.75,10);
+
+glEnd();
+glPopMatrix();
+}
+
+
 
 static void birdCage(double sx, double sy, double sz, double theta, double tx, double ty, double tz)
 {
@@ -597,15 +778,15 @@ static void drawWorld(double x,double y,double z,
    //glRotated(th,0,1,0);
    //glScaled(dx,dy,dz); 
    DEM();
-   //drawRoads();
+   drawRoads();
    //saloon(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    
    //birdCage(1.0,1.0,1.0,5.0,5.0,5.0,0.0);
-   occidentalHotel(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+   //occidentalHotel(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //church(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //store(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //birdCage(1.0,1.0,1.0,5.0,5.0,5.0,0.0);
-   drawBuildings();
+   //drawBuildings();
    skyBox(200);
    //texture();
     
@@ -743,8 +924,8 @@ void display()
    else
    
    {
-      printf("translating by %d, 0, %d\n",upDown, leftRight);
-     // glTranslated(upDown,0,leftRight);
+      //printf("translating by %d, 0, %d\n",upDown, leftRight);
+      //glTranslated(upDown,0,leftRight);
       glRotatef(ph,1,0,0);
       glRotatef(th,0,1,0);
       glTranslated(upDown,height,leftRight);
@@ -755,12 +936,13 @@ void display()
 
    if (light)
    {
+	glTranslated(0,10,20);
         float Ambient[]   = {0.01*ambient ,0.01*ambient ,0.01*ambient ,1.0};
         float Diffuse[]   = {0.01*diffuse ,0.01*diffuse ,0.01*diffuse ,1.0};
         float Specular[]  = {0.01*specular,0.01*specular,0.01*specular,1.0};
-        float Position[]  = {distance*Cos(zh),ylight,distance*Sin(zh),1.0};
+        float Position[]  = {distance*Cos(zh)+60,ylight,distance*Sin(zh)+35,1.0};
         glColor3f(1,1,1);
-        ball(Position[0],Position[1],Position[2] ,4);
+        ball(Position[0],Position[1],Position[2], 6);
         glEnable(GL_NORMALIZE);
         glEnable(GL_LIGHTING);
         glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,local);
