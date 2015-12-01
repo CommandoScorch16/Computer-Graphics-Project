@@ -1,13 +1,22 @@
 Samuel Horton
-Assignment 6
+Final Project
+Tombstone, Arizona
 CSCI 4229
+
+How to run my program:
+run the command ./go, which compiles and launches the executable
+
 
 key bindings:
 
 '[' - decrease elevation of light
 ']' - increase elevation of light
-'page dn' - zoom out
-'page up' - zoom in
 'm' - pause/unpause light
 
-arrow keys - rotate up,down,left,right
+arrow keys - rotate down,up,left,right
+
+Movement:
+
+The movement is along the axes, so to move up on the z-axis, press 'w'. To move down on the z-axis, press 's'. to move up on the x-axis, press 'a'. To move down on the x-axis, press 'd'.
+
+

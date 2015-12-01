@@ -24,7 +24,7 @@ void smallHouse1(double sx, double sy, double sz, double theta, double tx, doubl
 {
 glPushMatrix();
 
-printf("glTranslated(%f, %f, %f);", tx,ty,tz);
+//printf("glTranslated(%f, %f, %f);", tx,ty,tz);
 glTranslated(tx,ty,tz);
 glScaled(sx,sy,sz);
 glRotated(theta,0,1,0);

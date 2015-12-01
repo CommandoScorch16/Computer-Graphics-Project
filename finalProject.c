@@ -50,12 +50,15 @@ unsigned int a;
 unsigned int b;
 unsigned int c;
 unsigned int d;
-unsigned int e,f,g,h,i;
+unsigned int f,g,h,i,j,k,l,wood1,wood2,wood3,wood4,face1;
+
 int height = -20;
 int upDown,leftRight=0;
-#define LEN 8192  //  Maximum length of text string
+#define LEN 8192  //  The maximum length of text string
 
 static void skyBox(double D);
+
+//Building Prototypes
 void occidentalHotel(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
 
 static void birdCage(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
@@ -63,6 +66,9 @@ static void birdCage(double sx, double sy, double sz, double theta, double tx, d
 static void store1(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
 
 static void saloon1(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
+
+static void smallHouse2(double sx, double sy, double sz, double theta, double tx, double ty, double tz);
+
 
 void Print(const char* format , ...)
 {
@@ -179,23 +185,26 @@ y2 = 94.0;
 			
 			}
 			else if ((i == 0) && (j == 0) && (i1 == 4.0)){
-			birdCage(0.6,0.6,0.6,180.0,x2-2-i1*5,0.0,y2);
+			birdCage(0.8,0.8,0.8,180.0,x2-2-i1*5,0.0,y2);
 			}
 			else {
 			//draw north side
 			if (((int)i1)%2 == 0)
-			smallHouse1(0.7,0.7,0.7,0.0,x2-3.5-i1*5,0.0,y2);
+			smallHouse2(0.7,0.7,0.7,0.0,x2-3.5-i1*5,0.0,y2);
 			else
 			store1(0.5,0.5,0.5,180.0,x2-2-i1*5,0.0,y2);
 			
 			//draw east side
 			if (((int)i1)%3 == 0)
-			smallHouse1(0.7,0.7,0.7,270.0,x1,0.0,y1+i1*5);		
+			smallHouse2(0.7,0.7,0.7,270.0,x1,0.0,y1+i1*5);		
 			else
 			saloon1(0.5,0.5,0.5,90,x1,0.0,y1+i1*5.0);
 			
 			//draw west side
-			smallHouse1(0.7,0.7,0.7,90.0,x2,0.0,y2-i1*5);
+		
+			//dont draw inside occidental
+			if ((i != 0) && (j != 0) && (i1 != 0.0))
+			smallHouse2(0.7,0.7,0.7,90.0,x2,0.0,y2-i1*5);
 			
 			//draw south side
 			store1(0.5,0.5,0.5,0.0,x1+5+i1*5,0.0,y1+0);	
@@ -526,82 +535,116 @@ static void saloon1(double sx, double sy, double sz, double theta, double tx, do
 
 glPushMatrix();
 
-printf("SALLON %f, %f, %f", tx,ty,tz);
+
 glTranslated(tx,ty,tz);
 glScaled(sx,sy,sz);
 glRotated(theta,0,1,0);
 
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, wood4);
+
 glBegin(GL_QUADS);
 
-glColor3f(0.9,0.0,0.0);
+//glColor3f(0.9,0.0,0.0);
 //draw front
-glVertex3f(0,0,0);
-glVertex3f(5,0,0);
-glVertex3f(5,6,0);
-glVertex3f(0,6,0);
+glTexCoord2f(0,0); glVertex3f(0,0,0);
+glTexCoord2f(1,0); glVertex3f(5,0,0);
+glTexCoord2f(1,1); glVertex3f(5,6,0);
+glTexCoord2f(0,1); glVertex3f(0,6,0);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D,l);
+
+glBegin(GL_QUADS);
+glTexCoord2f(1,0); glVertex3f(0,4,-0.1);
+glTexCoord2f(0,0); glVertex3f(5,4,-0.1);
+glTexCoord2f(0,1); glVertex3f(5,6,-0.1);
+glTexCoord2f(1,1); glVertex3f(0,6,-0.1);
+
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D,wood4);
+glBegin(GL_QUADS);
 
 //draw right side
-glVertex3f(0,0,0);
-glVertex3f(0,4.5,0);
-glVertex3f(0,4.5,7);
-glVertex3f(0,0,7);
+glTexCoord2f(0,0); glVertex3f(0,0,0);
+glTexCoord2f(0,1); glVertex3f(0,4.5,0);
+glTexCoord2f(1,1); glVertex3f(0,4.5,7);
+glTexCoord2f(1,0); glVertex3f(0,0,7);
 
 //draw left side
-glVertex3f(5,0,0);
-glVertex3f(5,4.5,0);
-glVertex3f(5,4.5,7);
-glVertex3f(5,0,7);
+glTexCoord2f(0,0); glVertex3f(5,0,0);
+glTexCoord2f(0,1); glVertex3f(5,4.5,0);
+glTexCoord2f(1,1); glVertex3f(5,4.5,7);
+glTexCoord2f(1,0); glVertex3f(5,0,7);
 
 //draw back
-glVertex3f(0,0,7);
-glVertex3f(5,0,7);
-glVertex3f(5,4.5,7);
-glVertex3f(0,4.5,7);
+glTexCoord2f(0,0); glVertex3f(0,0,7);
+glTexCoord2f(1,0); glVertex3f(5,0,7);
+glTexCoord2f(1,1); glVertex3f(5,4.5,7);
+glTexCoord2f(0,1); glVertex3f(0,4.5,7);
+glEnd();
+glDisable(GL_TEXTURE_2D);
 
+glBegin(GL_QUADS);
+glColor3f(1,1,1);
 //draw roof
 glVertex3f(0,4.5,0);
 glVertex3f(5,4.5,0);
 glVertex3f(5,4.5,7);
 glVertex3f(0,4.5,7);
 
+glColor3f(0.5,0.5,0.5);
 //draw balcony
 glVertex3f(0,3,0);
 glVertex3f(5,3,0);
 glVertex3f(5,3,-2);
 glVertex3f(0,3,-2);
 
+glEnd();
+
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D,wood4);
+glBegin(GL_QUADS);
 //draw right balcony railing
 double i;
 for (i = -2.0; i < 0.0; i+=0.25)
 {
-glVertex3f(5,3,i);
-glVertex3f(5,3,i+0.15);
-glVertex3f(5,3.5,i+0.15);
-glVertex3f(5,3.5,i);
+glTexCoord2f(0,0); glVertex3f(5,3,i);
+glTexCoord2f(1,0); glVertex3f(5,3,i+0.15);
+glTexCoord2f(1,1); glVertex3f(5,3.5,i+0.15);
+glTexCoord2f(0,1); glVertex3f(5,3.5,i);
 }
 
 glColor3f(0.4,0.4,0.4);
 //draw front balconay railing
 for (i = 5.0; i > 0.0; i-=0.25)
 {
-glVertex3f(i,3,-2);
-glVertex3f(i-0.15,3,-2);
-glVertex3f(i-0.15,3.5,-2);
-glVertex3f(i,3.5,-2);
+glTexCoord2f(0,0); glVertex3f(i,3,-2);
+glTexCoord2f(1,0); glVertex3f(i-0.15,3,-2);
+glTexCoord2f(1,1); glVertex3f(i-0.15,3.5,-2);
+glTexCoord2f(0,1); glVertex3f(i,3.5,-2);
 }
 
 //draw left balcony railing
 for (i = -2.0; i < 0.0; i+=0.25)
 {
-glVertex3f(0,3,i);
-glVertex3f(0,3,i+0.15);
-glVertex3f(0,3.5,i+0.15);
-glVertex3f(0,3.5,i);
+glTexCoord2f(0,0); glVertex3f(0,3,i);
+glTexCoord2f(1,0); glVertex3f(0,3,i+0.15);
+glTexCoord2f(1,1); glVertex3f(0,3.5,i+0.15);
+glTexCoord2f(0,1); glVertex3f(0,3.5,i);
 }
 
 
 
 glEnd();
+glDisable(GL_TEXTURE_2D);
 glPopMatrix();
 }
 
@@ -613,6 +656,9 @@ glTranslated(tx,ty,tz);
 glScaled(sx,sy,sz);
 glRotated(theta,0,1,0);
 
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D,face1);
+
 
 glBegin(GL_QUADS);
 double height1=5;
@@ -620,10 +666,18 @@ double height1=5;
 
 //draw front
 calculateNormal2(0,0,0,4,0,0,4,height1-.25,0,1.0);
-glVertex3f(0,0,0);
-glVertex3f(4,0,0);
-glVertex3f(4,height1-.25,0);
-glVertex3f(0,height1-.25,0);
+glTexCoord2f(0,0); glVertex3f(0,0,0);
+glTexCoord2f(1,0); glVertex3f(4,0,0);
+glTexCoord2f(1,1); glVertex3f(4,height1-.25,0);
+glTexCoord2f(0,1); glVertex3f(0,height1-.25,0);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D,wood2);
+glBegin(GL_QUADS);
 
 //now draw the sides
 double numOfSides;
@@ -634,17 +688,17 @@ for (numOfSides=1.0; numOfSides<6.0; numOfSides+=1.0){
 
 //draw left side
 calculateNormal2(0,0,dz,0,height1-(.25*numOfSides),dz,0,height1-(.25*numOfSides),dz+2,1.0);
-glVertex3f(0,0,dz);
-glVertex3f(0,height1-(.25*numOfSides),dz);
-glVertex3f(0,height1-(.25*numOfSides),dz+2);
-glVertex3f(0,0,dz+2);
+glTexCoord2f(0,0); glVertex3f(0,0,dz);
+glTexCoord2f(0,1); glVertex3f(0,height1-(.25*numOfSides),dz);
+glTexCoord2f(1,1); glVertex3f(0,height1-(.25*numOfSides),dz+2);
+glTexCoord2f(1,0); glVertex3f(0,0,dz+2);
 
 //draw right side
 calculateNormal2(4,0,dz,4,height1-(.25*numOfSides),dz,4,height1-(.25*numOfSides),dz+2,-1.0);
-glVertex3f(4,0,dz);
-glVertex3f(4,height1-(.25*numOfSides),dz);
-glVertex3f(4,height1-(.25*numOfSides),dz+2);
-glVertex3f(4,0,dz+2);
+glTexCoord2f(0,0); glVertex3f(4,0,dz);
+glTexCoord2f(0,1); glVertex3f(4,height1-(.25*numOfSides),dz);
+glTexCoord2f(1,1);  glVertex3f(4,height1-(.25*numOfSides),dz+2);
+glTexCoord2f(1,0); glVertex3f(4,0,dz+2);
 
 
 //now draw these a roof
@@ -669,12 +723,14 @@ dz+=2;
 
 //draw back
 calculateNormal2(0,0,10,4,0,10,4,3.75,10,-1.0);
-glVertex3f(0,0,10);
-glVertex3f(4,0,10);
-glVertex3f(4,3.75,10);
-glVertex3f(0,3.75,10);
+glTexCoord2f(0,0); glVertex3f(0,0,10);
+glTexCoord2f(1,0); glVertex3f(4,0,10);
+glTexCoord2f(1,1); glVertex3f(4,3.75,10);
+glTexCoord2f(0,1); glVertex3f(0,3.75,10);
+
 
 glEnd();
+glDisable(GL_TEXTURE_2D);
 glPopMatrix();
 }
 
@@ -752,6 +808,88 @@ glPopMatrix();
 
 
 }
+
+static void smallHouse2(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
+
+glPushMatrix();
+
+//printf("glTranslated(%f, %f, %f);", tx,ty,tz);
+glTranslated(tx,ty,tz);
+glScaled(sx,sy,sz);
+glRotated(theta,0,1,0);
+
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, k);
+
+glBegin(GL_QUADS);
+glColor3f(0.4,0.4,0.4);
+calculateNormal2(0.0,3.0,0.01,0.0,4.0,0.01,3.0,3.0,0.01,-1.0);
+glTexCoord2f(0,0); glVertex3f(0,3,0.01);
+glTexCoord2f(1,0); glVertex3f(3,3,0.01);
+glTexCoord2f(1,1); glVertex3f(3,4,0.01);
+glTexCoord2f(0,1); glVertex3f(0,4,0.01);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, wood3);
+glBegin(GL_QUADS);
+//draw front
+calculateNormal2(0.0,0.0,0.0,3.0,0.0,0.0,3.0,4.0,0.0,-1.0);
+glTexCoord2f(0,0); glVertex3f(0,0,0);
+glTexCoord2f(1,0); glVertex3f(3,0,0);
+glTexCoord2f(1,1); glVertex3f(3,4,0);
+glTexCoord2f(0,1); glVertex3f(0,4,0);
+
+
+//draw right side
+calculateNormal2(0.5,0.0,0.0,0.5,0.0,-4.0,0.5,3.0,-4.0,1.0);
+glTexCoord2f(0,0); glVertex3f(0.5,0,0);
+glTexCoord2f(1,0); glVertex3f(0.5,0,-4);
+glTexCoord2f(1,1); glVertex3f(0.5,3,-4);
+glTexCoord2f(0,1); glVertex3f(0.5,3,0);
+
+//draw left side
+calculateNormal2(2.5,0.0,0.0,2.5,0.0,-4.0,2.5,3.0,-4.0,-1.0);
+glTexCoord2f(0,0); glVertex3f(2.5,0,0);
+glTexCoord2f(1,0); glVertex3f(2.5,0,-4);
+glTexCoord2f(1,1); glVertex3f(2.5,3,-4);
+glTexCoord2f(0,1); glVertex3f(2.5,3,0);
+
+//draw back
+calculateNormal2(0.5,0.0,-4.0,2.5,0.0,-4.0,2.5,3.0,-4.0,1.0);
+glTexCoord2f(0,0); glVertex3f(0.5,0,-4);
+glTexCoord2f(1,0); glVertex3f(2.5,0,-4);
+glTexCoord2f(1,1); glVertex3f(2.5,3,-4);
+glTexCoord2f(0,1); glVertex3f(0.5,3,-4);
+
+//draw roof
+calculateNormal2(2.5,3.0,0.0,0.5,3.0,0.0,0.5,3.0,-4.0,1.0);
+glVertex3f(2.5,3,0);
+glVertex3f(0.5,3,0);
+glVertex3f(0.5,3,-4);
+glVertex3f(2.5,3,-4);
+
+//draw canopy
+calculateNormal2(0.0,3.0,0.0,3.0,3.0,0.0,3.0,2.4,1.0,1.0);
+glVertex3f(0,3,0);
+glVertex3f(3,3,0);
+glVertex3f(3,2.4,1);
+glVertex3f(0,2.4,1);
+
+
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+glPopMatrix();
+
+
+}
+
+
 
 static void drawWorld(double x,double y,double z,
                  double dx,double dy,double dz,
@@ -1093,11 +1231,18 @@ int main(int argc,char* argv[])
    a = LoadTexBMP(groundTexture);
    b = LoadTexBMP(sky);
    d = LoadTexBMP(bc);
-   e = LoadTexBMP("wood1.bmp");
+   wood1 = LoadTexBMP("wood1.bmp");
    f = LoadTexBMP("hotel.bmp");
    g = LoadTexBMP("window1.bmp");
    h = LoadTexBMP("OCCIDENTALSIGN.bmp");
    i = LoadTexBMP("americanFlag.bmp");
+   j = LoadTexBMP("wood2.bmp");
+   k = LoadTexBMP("guns.bmp");
+   l = LoadTexBMP("saloonSign.bmp");
+   wood2 = LoadTexBMP("wood2.bmp");
+   wood3 = LoadTexBMP("wood3.bmp");
+   wood4 = LoadTexBMP("wood4.bmp");
+   face1 = LoadTexBMP("face1.bmp");
    glutMainLoop();
    return 0;
 }
