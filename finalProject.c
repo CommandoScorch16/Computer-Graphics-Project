@@ -13,10 +13,12 @@
 #endif
 
 int axes=1;       //  Display axes
-int mode=1;       //  Projection mode
+int mode=1;
+int mode1=1;       //  Projection mode
 int move=1;       //  Move light
 int th=200;         //  Azimuth of view angle
-int ph=20;         //  Elevation of view angle
+int test = 200;
+int ph=0;         //  Elevation of view angle
 int fov=55;       //  Field of view (for perspective)
 int light=1;      //  Lighting
 double asp=1;     //  Aspect ratio
@@ -50,10 +52,12 @@ unsigned int a;
 unsigned int b;
 unsigned int c;
 unsigned int d;
-unsigned int f,g,h,i,j,k,l,wood1,wood2,wood3,wood4,face1;
+unsigned int f,g,h,i,j,k,l,wood1,wood2,wood3,wood4,wood5,face1;
 
-int height = -20;
+int height = -22;
 int upDown,leftRight=0;
+double xxx = 0.0;
+double zzz = 0.0;
 #define LEN 8192  //  The maximum length of text string
 
 static void skyBox(double D);
@@ -117,6 +121,8 @@ glNormal3f( ((r1y*r2z)-(r2y*r1z))  ,  -1*((r1x*r2z)-(r2x*r1z))  ,  ((r1x*r2y)-(r
 
 void drawRoads()
 {
+printf("theta is %d", th);
+
 /*
 Street Widths:
 
@@ -547,6 +553,7 @@ glBegin(GL_QUADS);
 
 //glColor3f(0.9,0.0,0.0);
 //draw front
+calculateNormal2(0,0,0,5,0,0,5,6,0,1);
 glTexCoord2f(0,0); glVertex3f(0,0,0);
 glTexCoord2f(1,0); glVertex3f(5,0,0);
 glTexCoord2f(1,1); glVertex3f(5,6,0);
@@ -558,6 +565,8 @@ glEnable(GL_TEXTURE_2D);
 glBindTexture(GL_TEXTURE_2D,l);
 
 glBegin(GL_QUADS);
+
+calculateNormal2(0,4,-0.1,5,4,-0.1,5,6,-0.1,1.0);
 glTexCoord2f(1,0); glVertex3f(0,4,-0.1);
 glTexCoord2f(0,0); glVertex3f(5,4,-0.1);
 glTexCoord2f(0,1); glVertex3f(5,6,-0.1);
@@ -676,7 +685,7 @@ glDisable(GL_TEXTURE_2D);
 
 
 glEnable(GL_TEXTURE_2D);
-glBindTexture(GL_TEXTURE_2D,wood2);
+glBindTexture(GL_TEXTURE_2D,wood5);
 glBegin(GL_QUADS);
 
 //now draw the sides
@@ -1051,24 +1060,35 @@ void display()
    glLoadIdentity();
 //glTranslated(upDown,leftRight,0);
 
-   if (!mode)
-   {
-      
-      double Ex = -2*dim*Sin(th)*Cos(ph);
-      double Ey = +2*dim        *Sin(ph);
-      double Ez = +2*dim*Cos(th)*Cos(ph);
-      gluLookAt(Ex,Ey,Ez , 0,0,0 , 0,Cos(ph),0);
-   }
-   else
+ 
+  
    
-   {
+   
+     
       //printf("translating by %d, 0, %d\n",upDown, leftRight);
       //glTranslated(upDown,0,leftRight);
-      glRotatef(ph,1,0,0);
-      glRotatef(th,0,1,0);
-      glTranslated(upDown,height,leftRight);
+     //tsr 
 
-   }
+     glRotatef(ph,1,0,0);
+
+     glRotatef(th,0,1,0);
+   
+    
+    if (!mode1)
+      //first person navigation
+      glTranslated(-xxx,height,-zzz);
+    else
+      //overtop view
+      glTranslated(-upDown,height,leftRight);
+      //glTranslated(leftRight*Sin(th),height,leftRight*-1*Cos(th));
+      
+      glScaled(2,2,2);
+      //glTranslated(leftRight*Sin(th),height,leftRight*-1*Cos(th));
+      //glRotatef(ph,0,1,0);
+      
+    
+      
+  
 
    glShadeModel(smooth ? GL_SMOOTH : GL_FLAT);
 
@@ -1166,17 +1186,29 @@ void key(unsigned char ch,int x,int y)
    else if (ch == 'l' || ch == 'L')
       light = 1-light;
    else if (ch == 'p' || ch == 'P')
-      mode = 1-mode;
+      mode1 = 1-mode1;
    else if (ch == 'm' || ch == 'M')
       move = 1-move;
    else if (ch == 'd')
       upDown += 5;
    else if (ch == 'a')
       upDown -= 5;
-   else if (ch == 's')
-      leftRight += 5;
-   else if (ch == 'w')
+   else if (ch == 's'){
+      if (mode1)
+        leftRight += 5;
+      else{
+        xxx -= Sin(th) ;
+        zzz += Cos(th) ;}
+}
+
+   else if (ch == 'w'){
+      if (mode1)
       leftRight -= 5;
+      else{
+      xxx += Sin(th) ;
+      zzz -= Cos(th) ;}
+          }
+
    else if (ch == 'q')
       height += 5;
    else if (ch == 'e')
@@ -1193,9 +1225,13 @@ void key(unsigned char ch,int x,int y)
       ylight -= 5;
    else if (ch==']')
       ylight += 5;
+  
+     
    Project(mode?fov:0,asp,dim);
    glutIdleFunc(move?idle:NULL);
    glutPostRedisplay();
+
+
 }
 
 void reshape(int width,int height)
@@ -1242,6 +1278,7 @@ int main(int argc,char* argv[])
    wood2 = LoadTexBMP("wood2.bmp");
    wood3 = LoadTexBMP("wood3.bmp");
    wood4 = LoadTexBMP("wood4.bmp");
+   wood5 = LoadTexBMP("wood5.bmp");
    face1 = LoadTexBMP("face1.bmp");
    glutMainLoop();
    return 0;
