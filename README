@@ -12,11 +12,16 @@ key bindings:
 '[' - decrease elevation of light
 ']' - increase elevation of light
 'm' - pause/unpause light
-
+'p' - change between overview and first person
 arrow keys - rotate down,up,left,right
+first person - 'w' for forwards and 's' for backwards
+'n' - toggle street labels
+'1' - toggle merman
+'q' - move elevation down
+'e' - move elevation up
 
 Movement:
 
-The movement is along the axes, so to move up on the z-axis, press 'w'. To move down on the z-axis, press 's'. to move up on the x-axis, press 'a'. To move down on the x-axis, press 'd'.
+The movement for overview mode is along the axes, so to move up on the z-axis, press 'w'. To move down on the z-axis, press 's'. to move up on the x-axis, press 'a'. To move down on the x-axis, press 'd'.
 
 

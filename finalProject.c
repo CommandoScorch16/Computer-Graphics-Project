@@ -22,7 +22,7 @@ int ph=0;         //  Elevation of view angle
 int fov=55;       //  Field of view (for perspective)
 int light=1;      //  Lighting
 double asp=1;     //  Aspect ratio
-double dim=42.0;   //  Size of world
+double dim=60.0;   //  Size of world
 // Light values
 int one       =   1;  // Unit value
 int distance  =   80;  // Light distance
@@ -52,12 +52,16 @@ unsigned int a;
 unsigned int b;
 unsigned int c;
 unsigned int d;
-unsigned int f,g,h,i,j,k,l,wood1,wood2,wood3,wood4,wood5,face1;
+unsigned int merman,door1,door2,sign1,f,g,h,i,j,k,l,wood1,wood2,wood3,wood4,wood5,face1,face2,face3,face4,face5,face6,face7;
 
+
+unsigned int count = 0; //how many stores
 int height = -22;
 int upDown,leftRight=0;
 double xxx = 0.0;
 double zzz = 0.0;
+int displayNames = 0;
+unsigned int mman = 0;
 #define LEN 8192  //  The maximum length of text string
 
 static void skyBox(double D);
@@ -322,6 +326,9 @@ int now;
 double x11=0;
 double z11=2.5;
 
+double x22=2;
+double z22=-7.6;
+
 for (now = 0; now < 5; now+=1)
 {
 calculateNormal2(x11,4.2,z11,x11+.5,4.2,z11-.2,x11+.5,3.2,z11-.2,1.0);
@@ -330,9 +337,20 @@ glTexCoord2f(1,1); glVertex3f(x11+.5,4.2,z11-.2);
 glTexCoord2f(1,0); glVertex3f(x11+.5,3.2,z11-.2);
 glTexCoord2f(0,0); glVertex3f(x11,3.2,z11);
 
+if (now != 0){
+calculateNormal2(x22,4.2,z22,x22+.5,4.2,z22+.60,x22+.5,3.2,z22+.60,-1.0);
+glTexCoord2f(0,1); glVertex3f(x22,4.2,z22);
+glTexCoord2f(1,1); glVertex3f(x22+.5,4.2,z22+.60);
+glTexCoord2f(1,0); glVertex3f(x22+.5,3.2,z22+.60);
+glTexCoord2f(0,0); glVertex3f(x22,3.2,z22);
+}
 
 x11+=1.2;
 z11-=.4;
+
+x22+=1.2;
+z22+=1.4;
+
 }
 
 glEnd();
@@ -345,6 +363,36 @@ glVertex3f(7.0,0.0,0.0);
 glVertex3f(7.4,0.0,-1.25);//-1.25);
 glVertex3f(7.4,5.0,-1.25);//-1.25);
 glVertex3f(7.0,5.0,0.0);
+glEnd();
+
+//draw bottom door
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, door2);
+glBegin(GL_QUADS);
+
+calculateNormal2(7.1,0.0,-0.2,7.3,0.0,-0.9,7.3,1.5,-0.9,-1.0);
+glTexCoord2f(0,0); glVertex3f(7.1,0.0,-0.2);
+glTexCoord2f(1,0); glVertex3f(7.3,0.0,-0.9);
+glTexCoord2f(1,1); glVertex3f(7.3,1.5,-0.9);
+glTexCoord2f(0,1); glVertex3f(7.1,1.5,-0.2);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+//draw top door
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, door1);
+glBegin(GL_QUADS);
+
+calculateNormal2(7.1,0.0,-0.2,7.3,0.0,-0.9,7.3,1.5,-0.9,-1.0);
+glTexCoord2f(0,0); glVertex3f(7.1,3.0,-0.2);
+glTexCoord2f(1,0); glVertex3f(7.3,3.0,-0.9);
+glTexCoord2f(1,1); glVertex3f(7.3,4.0,-0.9);
+glTexCoord2f(0,1); glVertex3f(7.1,4.0,-0.2);
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+glBegin(GL_QUADS);
 
 //draw left face
 calculateNormal2(7.4,0.0,-1.25,2.5,0.0,-7.0,2.5,5.0,-7.0,-1.0);
@@ -660,13 +708,21 @@ glPopMatrix();
 
 static void store1(double sx, double sy, double sz, double theta, double tx, double ty, double tz){
 
+count +=1;
 glPushMatrix();
 glTranslated(tx,ty,tz);
 glScaled(sx,sy,sz);
 glRotated(theta,0,1,0);
 
 glEnable(GL_TEXTURE_2D);
-glBindTexture(GL_TEXTURE_2D,face1);
+
+double height1=5;
+if (count%2==0){
+//glBindTexture(GL_TEXTURE_2D,face4);
+
+
+glBindTexture(GL_TEXTURE_2D,face2);
+
 
 
 glBegin(GL_QUADS);
@@ -675,14 +731,93 @@ double height1=5;
 
 //draw front
 calculateNormal2(0,0,0,4,0,0,4,height1-.25,0,1.0);
-glTexCoord2f(0,0); glVertex3f(0,0,0);
-glTexCoord2f(1,0); glVertex3f(4,0,0);
-glTexCoord2f(1,1); glVertex3f(4,height1-.25,0);
-glTexCoord2f(0,1); glVertex3f(0,height1-.25,0);
+glTexCoord2f(1,0); glVertex3f(0,0,0);
+glTexCoord2f(0,0); glVertex3f(4,0,0);
+glTexCoord2f(0,1); glVertex3f(4,height1-.25,0);
+glTexCoord2f(1,1); glVertex3f(0,height1-.25,0);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+goto here;
+}
+
+
+if (count%3==0){
+glBindTexture(GL_TEXTURE_2D,face5);
+
+glBegin(GL_QUADS);
+double height1=5;
+
+//draw front
+calculateNormal2(0,0,0,4,0,0,4,height1-.25,0,1.0);
+glTexCoord2f(1,0); glVertex3f(0,0,0);
+glTexCoord2f(0,0); glVertex3f(4,0,0);
+glTexCoord2f(0,1); glVertex3f(4,height1-.25,0);
+glTexCoord2f(1,1); glVertex3f(0,height1-.25,0);
 
 glEnd();
 glDisable(GL_TEXTURE_2D);
 
+goto here;
+}
+
+if (count%3==1){
+glBindTexture(GL_TEXTURE_2D,face7);
+
+glBegin(GL_QUADS);
+double height1=5;
+
+//draw front
+calculateNormal2(0,0,0,4,0,0,4,height1-.25,0,1.0);
+glTexCoord2f(1,0); glVertex3f(0,0,0);
+glTexCoord2f(0,0); glVertex3f(4,0,0);
+glTexCoord2f(0,1); glVertex3f(4,height1-.25,0);
+glTexCoord2f(1,1); glVertex3f(0,height1-.25,0);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+goto here;
+}
+
+
+
+
+else {
+glBindTexture(GL_TEXTURE_2D,face3);
+
+glBegin(GL_QUADS);
+double height1=5;
+
+//draw front
+calculateNormal2(0,0,0,4,0,0,4,height1-.25,0,1.0);
+glTexCoord2f(1,0); glVertex3f(0,0,0);
+glTexCoord2f(0,0); glVertex3f(4,0,0);
+glTexCoord2f(0,1); glVertex3f(4,height1-.25,0);
+glTexCoord2f(1,1); glVertex3f(0,height1-.25,0);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+
+
+}
+
+here:
+//draw advertisement
+if (count%2==0){
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D,sign1);
+glBegin(GL_QUADS);
+
+calculateNormal2(4.01,0,6,4.01,0,0,4.01,4,0,-1);
+glTexCoord2f(0,0); glVertex3f(4.01,0,6);
+glTexCoord2f(1,0); glVertex3f(4.01,0,0);
+glTexCoord2f(1,1); glVertex3f(4.01,4,0);
+glTexCoord2f(0,1); glVertex3f(4.01,4,6);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+}
 
 glEnable(GL_TEXTURE_2D);
 glBindTexture(GL_TEXTURE_2D,wood5);
@@ -708,6 +843,7 @@ glTexCoord2f(0,0); glVertex3f(4,0,dz);
 glTexCoord2f(0,1); glVertex3f(4,height1-(.25*numOfSides),dz);
 glTexCoord2f(1,1);  glVertex3f(4,height1-(.25*numOfSides),dz+2);
 glTexCoord2f(1,0); glVertex3f(4,0,dz+2);
+
 
 
 //now draw these a roof
@@ -764,6 +900,7 @@ glColor3f(1.0,0.8431,0.7725);
 
 
 //draw front
+calculateNormal2(0,0,-0.03,4,0,-0.03,4,3.5,-0.03,1.0);
 glTexCoord2f(1,0); glVertex3f(0,0,-0.03);
 glTexCoord2f(0,0); glVertex3f(4,0,-0.03);
 glTexCoord2f(0,1); glVertex3f(4,3.5,-0.03);
@@ -772,13 +909,26 @@ glTexCoord2f(1,1); glVertex3f(0,3.5,-0.03);
 glEnd();
 glDisable(GL_TEXTURE_2D);
 
-//glClear(GL_COLOR_BUFFER_BIT);
+if (mman){
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, merman);
 
+glBegin(GL_QUADS);
+calculateNormal2(-2,0,-7,-2,0,-0.5,-2,3.5,-0.5,1.0);
+glTexCoord2f(1,0); glVertex3f(-2,0,-7);
+glTexCoord2f(0,0); glVertex3f(-2,0,-0.5);
+glTexCoord2f(0,1); glVertex3f(-2,3.5,-0.5);
+glTexCoord2f(1,1); glVertex3f(-2,3.5,-7);
+
+glEnd();
+glDisable(GL_TEXTURE_2D);
+}
 
 glBegin(GL_QUADS);
 
 //glColor3f(1.0,0.8431,0.7725);
 
+calculateNormal2(0,0,0,4,0,0,4,3.5,0,1.0);
 glVertex3f(0,0,0);
 glVertex3f(4,0,0);
 glVertex3f(4,3.5,0);
@@ -786,24 +936,28 @@ glVertex3f(0,3.5,0);
 
 
 //now draw right side
+calculateNormal2(0,0,0,0,0,7,0,3.25,7,1.0);
 glVertex3f(0,0,0);
 glVertex3f(0,0,7);
 glVertex3f(0,3.25,7);
 glVertex3f(0,3.25,0);
 
 //now for the left
+calculateNormal2(4,0,0,4,0,7,4,3.25,7,-1.0);
 glVertex3f(4,0,0);
 glVertex3f(4,0,7);
 glVertex3f(4,3.25,7);
 glVertex3f(4,3.25,0);
 
 //the back
+calculateNormal2(4,0,7,0,0,7,0,3.25,7,1.0);
 glVertex3f(4,0,7);
 glVertex3f(0,0,7);
 glVertex3f(0,3.25,7);
 glVertex3f(4,3.25,7);
 
 //and then the roof
+calculateNormal2(4,3.25,7,0,3.25,7,0,3.25,0,1.0);
 glVertex3f(4,3.25,7);
 glVertex3f(0,3.25,7);
 glVertex3f(0,3.25,0);
@@ -832,7 +986,7 @@ glBindTexture(GL_TEXTURE_2D, k);
 
 glBegin(GL_QUADS);
 glColor3f(0.4,0.4,0.4);
-calculateNormal2(0.0,3.0,0.01,0.0,4.0,0.01,3.0,3.0,0.01,-1.0);
+calculateNormal2(0.0,3.0,0.01,0.0,4.0,0.01,3.0,3.0,0.01,1.0);
 glTexCoord2f(0,0); glVertex3f(0,3,0.01);
 glTexCoord2f(1,0); glVertex3f(3,3,0.01);
 glTexCoord2f(1,1); glVertex3f(3,4,0.01);
@@ -929,7 +1083,7 @@ static void drawWorld(double x,double y,double z,
    //saloon(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    
    //birdCage(1.0,1.0,1.0,5.0,5.0,5.0,0.0);
-   //occidentalHotel(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+   //occidentalHotel(1.0,1.0,1.0,0.0,0.0,0.0,0.0);
    //church(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //store(0.0,0.0,0.0,0.0,0.0,0.0,0.0);
    //birdCage(1.0,1.0,1.0,5.0,5.0,5.0,0.0);
@@ -1138,6 +1292,23 @@ void display()
       Print("Y");
       glRasterPos3d(0.0,0.0,len);
       Print("Z");
+
+      if(displayNames){
+      glRasterPos3d(86.0,9.0,30.0);
+      Print("Allen Street");
+      glRasterPos3d(89.0,9.0,69.0);
+      Print("Fremont Street");
+      glRasterPos3d(33.0,7.0,50.0);
+      Print("6th Street");
+      glRasterPos3d(69.0,7.0,50.0);
+      Print("5th Street");
+      glRasterPos3d(105.0,7.0,50.0);
+      Print("4th Street");
+      glRasterPos3d(141.0,7.0,50.0); 
+      Print("3rd Street");
+
+      }
+ 
    }
 
 
@@ -1191,6 +1362,8 @@ void key(unsigned char ch,int x,int y)
       move = 1-move;
    else if (ch == 'd')
       upDown += 5;
+   else if (ch == 'n')
+      displayNames = 1-displayNames;
    else if (ch == 'a')
       upDown -= 5;
    else if (ch == 's'){
@@ -1225,6 +1398,8 @@ void key(unsigned char ch,int x,int y)
       ylight -= 5;
    else if (ch==']')
       ylight += 5;
+   else if (ch=='1')
+      mman = 1-mman;
   
      
    Project(mode?fov:0,asp,dim);
@@ -1280,6 +1455,16 @@ int main(int argc,char* argv[])
    wood4 = LoadTexBMP("wood4.bmp");
    wood5 = LoadTexBMP("wood5.bmp");
    face1 = LoadTexBMP("face1.bmp");
+   face2 = LoadTexBMP("face2.bmp");
+   face3 = LoadTexBMP("face3.bmp");
+   face4 = LoadTexBMP("face4.bmp");
+   face5 = LoadTexBMP("face5.bmp");
+   face6 = LoadTexBMP("face6.bmp");
+   face7 = LoadTexBMP("face7.bmp");
+   sign1 = LoadTexBMP("sign1.bmp");
+   door1 = LoadTexBMP("door1.bmp");
+   door2 = LoadTexBMP("door2.bmp");
+   merman = LoadTexBMP("merman.bmp");
    glutMainLoop();
    return 0;
 }
