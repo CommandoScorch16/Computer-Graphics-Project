@@ -4,6 +4,7 @@
 ---
 #Historical Buildings implemented so far:
 ##1. The Occidental Hotel
+###The Occidental Hotel had a short but interesting life. It was founded in 1883, and it burned down in 1889. It supposedly could accomidate over a hundred guests. 
 
 
 ##2. The Birdcage Theatre
