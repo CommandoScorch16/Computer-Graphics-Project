@@ -1,7 +1,7 @@
 #My re-creation of Tombstone, Arizona in OpenGl
 ##
 ##For this project, I recreated the town layout of Tombstone Arizona from an old map I found, located [here](https://upload.wikimedia.org/wikipedia/commons/3/30/Tombstone_fire_insurance_map_1888.jpg)
-##The code for this project is implemented in C. External functions and files are implemented by Willem Schrueder.
+##The code for this project is implemented in C. External functions and files are implemented by Professor Willem Schrueder.
 ---
 #Historical Buildings implemented so far:
 ##1. The Occidental Hotel
